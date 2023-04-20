@@ -7,12 +7,12 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/manuzhang/jupyterlab_spark",
+  "homepage": "https://github.com/CamberCloud-Inc/jupyterlab_spark",
   "bugs": {
-    "url": "https://github.com/manuzhang/jupyterlab_spark/issues"
+    "url": "https://github.com/CamberCloud-Inc/jupyterlab_spark/issues"
   },
   "license": "apache-2.0",
-  "author": "manuzhang",
+  "author": "CamberCloud-Inc",
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
     "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
