@@ -7,9 +7,7 @@ import {IMainMenu} from '@jupyterlab/mainmenu'
 import {Menu} from '@lumino/widgets'
 
 import '../style/index.css';
-import { showDialog, Dialog, MainAreaWidget, IFrame } from '@jupyterlab/apputils';
-
-import { Widget } from '@lumino/widgets';
+import { MainAreaWidget, IFrame } from '@jupyterlab/apputils';
 
 namespace CommandIDs {
   export const input = "ui:input";
@@ -44,25 +42,6 @@ export function activate_custom_menu(app: JupyterFrontEnd, mainMenu: IMainMenu):
     return widget;
   }
 
-
-  app.commands.addCommand(CommandIDs.input, {
-    label: 'Application UI',
-    execute: args => {
-      showDialog({
-        title: 'Input the Spark application id',
-        body: new InputAppIdWidget(),
-        buttons: [Dialog.cancelButton(), Dialog.okButton({ label : 'CREATE'})]
-      }).then(result => {
-        if (result.button.label === 'CREATE') {
-          const appId = <string>result.value;
-          return app.commands.execute(CommandIDs.open, {appId: appId});
-        } else {
-          return;
-        }
-      })
-    }
-  });
-
   app.commands.addCommand(CommandIDs.open, {
     execute: args => {
       const url = 'http://localhost:4040/';
@@ -77,32 +56,11 @@ export function activate_custom_menu(app: JupyterFrontEnd, mainMenu: IMainMenu):
   })
 
   const sparkMenu = Private.createMenu(app, 'Spark');
-  sparkMenu.addItem({ command: CommandIDs.input });
+  sparkMenu.addItem({ command: CommandIDs.open });
 
   mainMenu.addMenu(sparkMenu, { rank: 70 });
 
   return Promise.resolve(void 0);
-}
-
-class InputAppIdWidget extends Widget {
-  constructor() {
-    super({node: Private.createOpenNode() });
-  }
-
-  /**
-   * Get the value of the widget
-   */
-  getValue(): string {
-    return this.inputNode.value;
-  }
-
-  /**
-   * Get the input text node.
-   */
-  get inputNode(): HTMLInputElement {
-    return this.node.getElementsByTagName('input')[0] as HTMLInputElement;
-  }
-
 }
 
 namespace Private {
