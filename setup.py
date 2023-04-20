@@ -13,7 +13,7 @@ from jupyter_packaging import (
 HERE = Path(__file__).parent.resolve()
 
 # The name of the project
-name = "jupyterlab_examples_toolbar_button"
+name = "jupyterlab_spark"
 
 lab_path = (HERE / name.replace("-", "_") / "labextension")
 
