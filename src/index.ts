@@ -65,7 +65,7 @@ export function activate_custom_menu(app: JupyterFrontEnd, mainMenu: IMainMenu):
 
   app.commands.addCommand(CommandIDs.open, {
     execute: args => {
-      const url = 'http://localhost:8080/app/?appId=' + args['appId'];
+      const url = 'http://localhost:4040/'
       let widget =  newWidget(url, 'Spark App UI');
       if (!widget.isAttached) {
         // Attach the widget to the main work area if it's not there
