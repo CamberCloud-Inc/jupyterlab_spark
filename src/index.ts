@@ -1,17 +1,16 @@
 import {
-  JupyterFrontEnd, JupyterFrontEndPlugin
+  JupyterFrontEnd,
+  JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-import {IMainMenu} from '@jupyterlab/mainmenu'
+import { IMainMenu } from '@jupyterlab/mainmenu'
 
-import {Menu} from '@lumino/widgets'
+import { Menu } from '@lumino/widgets'
 
 import '../style/index.css';
 import { MainAreaWidget, IFrame } from '@jupyterlab/apputils';
 
 namespace CommandIDs {
-  export const input = "ui:input";
-  
   export const open = "ui:open";
 }
 
