@@ -4,12 +4,6 @@ from pathlib import Path
 
 import setuptools
 
-from jupyter_packaging import (
-    wrap_installers,
-    npm_builder,
-    get_data_files
-)
-
 HERE = Path(__file__).parent.resolve()
 
 # The name of the project
@@ -42,14 +36,45 @@ setup_args = dict(
     author_email=pkg_json["author"]["email"],
     description=pkg_json["description"],
     license=pkg_json["license"],
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    platforms="Linux, Mac OS X, Windows",
     packages=setuptools.find_packages(),
+    zip_safe=False,
+    include_package_data=True,
+    python_requires=">=3.6,<4",
+    install_requires=[
+        "jupyter_server>=1.21.0,<3",
+        "nbdime~=3.1",
+        "nbformat",
+        "packaging",
+        "traitlets~=5.9.0",
+        "wheel",
+    ],
     keywords=pkg_json["keywords"],
+    classifiers=[
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Framework :: Jupyter",
+    ],
 )
 
 try:
+    from jupyter_packaging import (
+        wrap_installers,
+        npm_builder,
+        get_data_files
+    )
 
     post_develop = npm_builder(
-        build_cmd="install:extension", source_dir="src", build_dir=lab_path
+        build_cmd="build:prod", source_dir="src", build_dir=lab_path
     )
     setup_args["cmdclass"] = wrap_installers(post_develop=post_develop, ensured_targets=ensured_targets)
     setup_args["data_files"] = get_data_files(data_files_spec)
