@@ -4,15 +4,14 @@
   "jupyter.lab.menus": {
     "main": [
       {
-        "id": "jp-mainmenu-spark-ui",
-        "label": "Spark UI",
+        "id": "jp-mainmenu-spark",
+        "label": "Spark",
         "rank": 70,
         "items": [
           {
+            "type": "command",
             "command": "spark-ui:open",
-            "args": {
-              "origin": "from the menu"
-            }
+            "rank": 10
           }
         ]
       }

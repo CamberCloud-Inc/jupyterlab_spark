@@ -21,7 +21,7 @@ const extension: JupyterFrontEndPlugin<void> = {
 
     let namespace = 'spark-ui';
     let counter = 0;
-    function newWidget(url: string, text: string): MainAreaWidget {
+    function newMainAreaWidget(url: string, text: string): MainAreaWidget {
       let content = new IFrame({sandbox: ['allow-forms', 'allow-same-origin', 'allow-scripts']});
       content.url = url;
       content.title.label = text;
@@ -34,7 +34,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       caption: "Open the Spark App UI",
       execute: (args: any) => {
         const url = 'http://localhost:4040/';
-        let widget =  newWidget(url, 'Spark App UI');
+        let widget =  newMainAreaWidget(url, 'Spark App UI');
         if (!widget.isAttached) {
           // Attach the widget to the main work area if it's not there
           app.shell.add(widget, "main");

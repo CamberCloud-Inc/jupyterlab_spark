@@ -14,6 +14,7 @@ lab_path = (HERE / name.replace("-", "_") / "labextension")
 # Representative files that should exist after a successful build
 ensured_targets = [
     str(lab_path / "package.json"),
+    str(lab_path / "static/style.js")
 ]
 
 labext_name = "@cambercloudinc/jupyterlab_spark"
@@ -67,7 +68,7 @@ try:
     )
 
     post_develop = npm_builder(
-        build_cmd="build:prod", source_dir="src", build_dir=lab_path
+        build_cmd="install:extension", source_dir="src", build_dir=lab_path
     )
     setup_args["cmdclass"] = wrap_installers(post_develop=post_develop, ensured_targets=ensured_targets)
     setup_args["data_files"] = get_data_files(data_files_spec)
