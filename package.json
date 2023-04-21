@@ -18,7 +18,8 @@
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+    "style/**/*.{css,eot,js,gif,html,jpg,json,png,svg,woff2,ttf}",
+    "schema/**/*.json"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -48,7 +49,7 @@
   },
   "dependencies": {
     "@jupyterlab/application": "^3.0.0",
-    "@jupyterlab/mainmenu": "^3.0.0"
+    "@jupyterlab/apputils": "^3.0.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",

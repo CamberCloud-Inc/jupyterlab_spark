@@ -3,85 +3,54 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-import { IMainMenu } from '@jupyterlab/mainmenu'
+import {
+  ICommandPalette,
+  IFrame,
+  MainAreaWidget
+} from '@jupyterlab/apputils';
 
-import { Menu } from '@lumino/widgets'
-
-import '../style/index.css';
-import { MainAreaWidget, IFrame } from '@jupyterlab/apputils';
-
-namespace CommandIDs {
-  export const open = "ui:open";
-}
-
-/**
- * Initialization data for the jupyterlab-spark extension.
- */
 const extension: JupyterFrontEndPlugin<void> = {
-  id: 'jupyterlab_spark',
+  id: 'main-menu',
   autoStart: true,
-  requires: [IMainMenu],
-  activate: activate_custom_menu
+  requires: [ICommandPalette],
+  activate:(app: JupyterFrontEnd, palette: ICommandPalette) => {
+    console.log('JupyterLab extension jupyterlab_spark is activated!');
+
+    const { commands } = app;
+    const command = "spark-ui:open";
+
+    let namespace = 'spark-ui';
+    let counter = 0;
+    function newWidget(url: string, text: string): MainAreaWidget {
+      let content = new IFrame({sandbox: ['allow-forms', 'allow-same-origin', 'allow-scripts']});
+      content.url = url;
+      content.title.label = text;
+      content.id = `${namespace}-${++counter}`;
+      return new MainAreaWidget({content});
+    }
+
+    commands.addCommand(command, {
+      label: "Spark App UI",
+      caption: "Open the Spark App UI",
+      execute: (args: any) => {
+        const url = 'http://localhost:4040/';
+        let widget =  newWidget(url, 'Spark App UI');
+        if (!widget.isAttached) {
+          // Attach the widget to the main work area if it's not there
+          app.shell.add(widget, "main");
+        }
+        // Activate the widget
+        app.shell.activateById(widget.id);
+      }
+    });
+
+    const category = "Spark";
+    palette.addItem({
+      command,
+      category,
+      args: { origin: 'from the palette' },
+    });
+  }
 };
 
 export default extension;
-
-export function activate_custom_menu(app: JupyterFrontEnd, mainMenu: IMainMenu): Promise<void> {
-  console.log('JupyterLab extension jupyterlab_spark is activated!');
-
-  let namespace = 'spark-ui'
-  let counter = 0;
-  
-  function newWidget(url: string, text: string): MainAreaWidget {
-    let content = new IFrame({sandbox: ['allow-forms', 'allow-same-origin', 'allow-scripts']});
-    content.url = url;
-    content.title.label = text;
-    content.id = `${namespace}-${++counter}`;
-    let widget = new MainAreaWidget({ content });
-    return widget;
-  }
-
-  app.commands.addCommand(CommandIDs.open, {
-    execute: args => {
-      const url = 'http://localhost:4040/';
-      let widget =  newWidget(url, 'Spark App UI');
-      if (!widget.isAttached) {
-        // Attach the widget to the main work area if it's not there
-        app.shell.add(widget, "main");
-      }
-      // Activate the widget
-      app.shell.activateById(widget.id);
-    }
-  })
-
-  const sparkMenu = Private.createMenu(app, 'Spark');
-  sparkMenu.addItem({ command: CommandIDs.open });
-
-  mainMenu.addMenu(sparkMenu, { rank: 70 });
-
-  return Promise.resolve(void 0);
-}
-
-namespace Private {
-
-  export function createMenu(app: JupyterFrontEnd, label: string): Menu {
-    const {commands} = app;
-    const menu = new Menu({ commands });
-    menu.title.label = label;
-    return menu;
-  }
-
-  export function createOpenNode(): HTMLElement {
-    let body = document.createElement('div');
-    let existingLabel = document.createElement('label');
-    existingLabel.textContent = 'Application Id:';
-
-    let input = document.createElement('input');
-    input.value = '';
-    input.placeholder = 'app-xxx';
-
-    body.appendChild(existingLabel);
-    body.appendChild(input);
-    return body;
-  }
-}

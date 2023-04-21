@@ -1,0 +1,23 @@
+{
+  "title": "Spark UI Menu",
+  "description": "Main Menu with Spark UI",
+  "jupyter.lab.menus": {
+    "main": [
+      {
+        "id": "jp-mainmenu-spark-ui",
+        "label": "Spark UI",
+        "rank": 70,
+        "items": [
+          {
+            "command": "spark-ui:open",
+            "args": {
+              "origin": "from the menu"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
