@@ -47,8 +47,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     const category = "Spark";
     palette.addItem({
       command,
-      category,
-      args: { origin: 'from the palette' },
+      category
     });
   }
 };
