@@ -7,9 +7,10 @@ import setuptools
 HERE = Path(__file__).parent.resolve()
 
 # The name of the project
-name = "jupyterlab_spark"
+NAME = "jupyterlab-spark"
+PACKAGE = NAME.replace("-", "_")
 
-lab_path = (HERE / name.replace("-", "_") / "labextension")
+lab_path = HERE / PACKAGE / "labextension"
 
 # Representative files that should exist after a successful build
 ensured_targets = [
@@ -17,21 +18,11 @@ ensured_targets = [
     str(lab_path / "static/style.js")
 ]
 
-labext_name = "@cambercloudinc/jupyterlab_spark"
+labext_name = "@cambercloudinc/jupyterlab-spark"
 
 data_files_spec = [
-    ("share/jupyter/labextensions/%s" % labext_name, str(lab_path.relative_to(HERE)), "**"),
-    ("share/jupyter/labextensions/%s" % labext_name, str("."), "install.json"),
-    (
-        "etc/jupyter/jupyter_server_config.d",
-        "jupyter-config/jupyter_server_config.d",
-        "jupyterlab_spark.json",
-    ),
-    (
-        "etc/jupyter/jupyter_notebook_config.d",
-        "jupyter-config/jupyter_notebook_config.d",
-        "jupyterlab_spark.json",
-    ),
+    ("share/jupyter/labextensions/%s" % labext_name, str(lab_path), "**"),
+    ("share/jupyter/labextensions/%s" % labext_name, str(HERE), "install.json"),
 ]
 
 long_description = (HERE / "README.md").read_text()
@@ -40,7 +31,7 @@ long_description = (HERE / "README.md").read_text()
 pkg_json = json.loads((HERE / "package.json").read_bytes())
 
 setup_args = dict(
-    name=name,
+    name=NAME,
     version=pkg_json["version"],
     url=pkg_json["homepage"],
     author=pkg_json["author"]["name"],
@@ -67,18 +58,18 @@ setup_args = dict(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Framework :: Jupyter",
+        "Framework :: Jupyter :: JupyterLab",
+        "Framework :: Jupyter :: JupyterLab :: 3",
+        "Framework :: Jupyter :: JupyterLab :: Extensions",
+        "Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt",
     ],
 )
 
 try:
-    from jupyter_packaging import (
-        wrap_installers,
-        npm_builder,
-        get_data_files
-    )
+    from jupyter_packaging import wrap_installers, npm_builder, get_data_files
 
     post_develop = npm_builder(
-        build_cmd="build:prod", source_dir="src", build_dir=lab_path
+        build_cmd="install:extension", source_dir="src", build_dir=lab_path
     )
     setup_args["cmdclass"] = wrap_installers(post_develop=post_develop, ensured_targets=ensured_targets)
     setup_args["data_files"] = get_data_files(data_files_spec)
