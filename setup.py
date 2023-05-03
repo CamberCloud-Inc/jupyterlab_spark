@@ -18,7 +18,7 @@ ensured_targets = [
     str(lab_path / "static/style.js")
 ]
 
-labext_name = "@cambercloudinc/jupyterlab-spark"
+labext_name = "jupyterlab-spark"
 
 data_files_spec = [
     ("share/jupyter/labextensions/%s" % labext_name, str(lab_path), "**"),
