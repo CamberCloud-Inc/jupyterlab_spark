@@ -10,7 +10,7 @@ import {
 } from '@jupyterlab/apputils';
 
 const extension: JupyterFrontEndPlugin<void> = {
-  id: '@cambercloudinc/jupyterlab_spark:plugin',
+  id: 'jupyterlab_spark:plugin',
   autoStart: true,
   requires: [ICommandPalette],
   activate:(app: JupyterFrontEnd, palette: ICommandPalette) => {
