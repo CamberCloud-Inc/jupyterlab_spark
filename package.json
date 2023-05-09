@@ -69,6 +69,14 @@
   "jupyterlab": {
     "extension": true,
     "schemaDir": "schema",
-    "outputDir": "jupyterlab_spark/labextension"
+    "outputDir": "jupyterlab_spark/labextension",
+    "discovery": {
+      "server": {
+        "managers": [
+          "pip",
+          "conda"
+        ]
+      }
+    }
   }
 }
