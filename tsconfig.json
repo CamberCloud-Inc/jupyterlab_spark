@@ -20,5 +20,5 @@
     "target": "es2018",
     "types": []
   },
-  "include": ["src/**/*"]
+  "include": ["src/*"]
 }

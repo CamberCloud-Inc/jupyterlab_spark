@@ -19,7 +19,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     const { commands } = app;
     const command = "spark-ui:open";
 
-    let namespace = 'spark-ui';
+    let namespace = "spark-ui";
     let counter = 0;
     function newMainAreaWidget(url: string, text: string): MainAreaWidget {
       let content = new IFrame({sandbox: ['allow-forms', 'allow-same-origin', 'allow-scripts']});
