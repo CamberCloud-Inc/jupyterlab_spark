@@ -14,3 +14,14 @@ def _jupyter_labextension_paths():
         'src': 'labextension',
         'dest': data['name']
     }]
+
+
+def _jupyter_server_extension_points():
+    return [{"module": "jupyterlab_spark"}]
+
+
+def _load_jupyter_server_extension(serverapp):
+    """
+    This function is called when the extension is loaded.
+    """
+    pass
