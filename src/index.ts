@@ -19,13 +19,11 @@ const extension: JupyterFrontEndPlugin<void> = {
     const { commands } = app;
     const command = "spark-ui:open";
 
-    let namespace = "spark-ui";
-    let counter = 0;
-    function newMainAreaWidget(url: string, text: string): MainAreaWidget {
+    function newSparkUIWidget(): MainAreaWidget {
       let content = new IFrame({sandbox: ['allow-forms', 'allow-same-origin', 'allow-scripts']});
-      content.url = url;
-      content.title.label = text;
-      content.id = `${namespace}-${++counter}`;
+      content.url = 'http://localhost:4040/';
+      content.title.label = 'Spark UI';
+      content.id = 'camber-spark-ui';
       return new MainAreaWidget({content});
     }
 
@@ -33,8 +31,11 @@ const extension: JupyterFrontEndPlugin<void> = {
       label: "Spark App UI",
       caption: "Open the Spark App UI",
       execute: (args: any) => {
-        const url = 'http://localhost:4040/';
-        let widget =  newMainAreaWidget(url, 'Spark App UI');
+        let widget =  newSparkUIWidget();
+        // Regenerate the widget if disposed
+        if (widget.isDisposed) {
+          widget = newSparkUIWidget();
+        }
         if (!widget.isAttached) {
           // Attach the widget to the main work area if it's not there
           app.shell.add(widget, "main");

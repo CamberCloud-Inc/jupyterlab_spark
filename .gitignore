@@ -6,3 +6,5 @@ node_modules/
 *.tsbuildinfo
 package-lock.json
 .idea
+yarn.lock
+jupyterlab_spark/labextension
