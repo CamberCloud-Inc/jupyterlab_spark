@@ -23,6 +23,16 @@ labext_name = "jupyterlab-spark"
 data_files_spec = [
     ("share/jupyter/labextensions/%s" % labext_name, str(lab_path.relative_to(HERE)), "**"),
     ("share/jupyter/labextensions/%s" % labext_name, str("."), "install.json"),
+    (
+        "etc/jupyter/jupyter_server_config.d",
+        "jupyter-config/jupyter_server_config.d",
+        "jupyterlab_spark.json",
+    ),
+    (
+        "etc/jupyter/jupyter_notebook_config.d",
+        "jupyter-config/jupyter_notebook_config.d",
+        "jupyterlab_spark.json",
+    ),
 ]
 
 long_description = (HERE / "README.md").read_text()
