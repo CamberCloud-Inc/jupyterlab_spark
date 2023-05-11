@@ -59,7 +59,7 @@ class SparkMonitorHandler(JupyterHandler):
         print('SPARKMONITOR_SERVER: Request_path ' +
               request_path + ' \n Replace_path:' + self.request_root_url)
 
-        backend_url = os.path.join(url, request_path)
+        backend_url = url_path_join(url, request_path)
         self.debug_url = url
         self.backendurl = backend_url
 
@@ -114,8 +114,26 @@ def substitute_proxy_links(content, root_url):
             match = PROXY_PATH_RE.match(value)
             if match is not None:
                 value = match.groups()[0]
-            tag[attribute] = os.path.join(root_url, value)
+            tag[attribute] = url_path_join(root_url, value)
     return str(soup)
+
+
+def url_path_join(*pieces):
+    """Join components of url into a relative url
+    Use to prevent double slash when joining subpath. This will leave the
+    initial and final / in place
+    """
+    initial = pieces[0].startswith('/')
+    final = pieces[-1].endswith('/')
+    stripped = [s.strip('/') for s in pieces]
+    result = '/'.join(s for s in stripped if s)
+    if initial:
+        result = '/' + result
+    if final:
+        result = result + '/'
+    if result == '//':
+        result = '/'
+    return result
 
 
 def _jupyter_labextension_paths():
