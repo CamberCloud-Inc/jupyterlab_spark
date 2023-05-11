@@ -33,7 +33,7 @@ with open(os.path.join(HERE, 'labextension', 'package.json')) as fid:
 class SparkMonitorHandler(JupyterHandler):
 
     @tornado.web.authenticated
-    def get(self):
+    async def get(self):
         """
         Handles get requests to the Spark UI
         Fetches the Spark Web UI from the configured ports
@@ -56,9 +56,9 @@ class SparkMonitorHandler(JupyterHandler):
         self.debug_url = url
         self.backendurl = backend_url
 
-        http = httpclient.HTTPClient()
+        http = httpclient.AsyncHTTPClient()
         try:
-            response = http.fetch(backend_url)
+            response = await http.fetch(backend_url)
         except Exception as e:
             print('SparkMonitor: Spark UI Error ', e)
         else:
