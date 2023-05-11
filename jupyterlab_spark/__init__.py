@@ -65,6 +65,12 @@ class SparkMonitorHandler(JupyterHandler):
         print(f'SparkMonitor: Request_path ' +
               request_path + ' \n Replace_path:' + self.request_root_url)
 
+        self.log.info(f"SparkMonitor - Backend URL: {backend_url}")
+        self.log.info(f"SparkMonitor - Debug URL: {url}")
+        self.log.info(f"SparkMonitor - Request URI: {self.request.uri}")
+        self.log.info(f'SparkMonitor: Request_path ' +
+              request_path + ' \n Replace_path:' + self.request_root_url)
+
         http = httpclient.AsyncHTTPClient()
         try:
             response = await http.fetch(backend_url)
