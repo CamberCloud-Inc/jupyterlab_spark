@@ -26,7 +26,7 @@ const extension: JupyterFrontEndPlugin<void> = {
         "sparkmonitor",
         port
       );
-      console.log(`Calling Spark UI url: ${url}`);
+
       iframe.setAttribute("style", "width:100%;height:100%;border:0");
       iframe.setAttribute("src", url);
       iframe.setAttribute("class", "sparkUIIFrame");
