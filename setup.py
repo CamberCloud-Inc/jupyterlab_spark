@@ -55,7 +55,11 @@ setup_args = dict(
     zip_safe=False,
     include_package_data=True,
     python_requires=">=3.6,<4",
-    install_requires=[],
+    install_requires=[
+        "tornado>=6.2",
+        "beautifulsoup4>=4.12",
+        "jupyter_server>=2.5.0",
+    ],
     keywords=pkg_json["keywords"],
     classifiers=[
         "License :: OSI Approved :: BSD License",
