@@ -46,15 +46,25 @@ class SparkMonitorHandler(JupyterHandler):
 
         proxy_root_path = PROXY_ROOT_BASE[:-1]
 
+        print("SPARKMONITOR_SERVER: Request URI: " + self.request.uri)
+        print("SPARKMONITOR_SERVER: Getting from " + url)
+
         request_path = self.request.uri[(self.request.uri.index(proxy_root_path) + len(proxy_root_path)):]
+        # Remove the /port (ie /4040, /4041 etc) from the request path because
+        # this is the path to the static js
         request_path = request_path.replace(f"/{port}", "")
 
         self.request_root_url = \
             self.request.uri[:self.request.uri.index(proxy_root_path) + len(proxy_root_path)] + "/" + port
+        print('SPARKMONITOR_SERVER: Request_path ' +
+              request_path + ' \n Replace_path:' + self.request_root_url)
 
         backend_url = os.path.join(url, request_path)
         self.debug_url = url
         self.backendurl = backend_url
+
+        print('SPARKMONITOR_SERVER: backend_url: ' + self.backendurl)
+        print('SPARKMONITOR_SERVER: debug_url: ' + self.debug_url)
 
         http = httpclient.AsyncHTTPClient()
         try:
