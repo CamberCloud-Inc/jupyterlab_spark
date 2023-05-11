@@ -158,7 +158,7 @@ def _load_jupyter_server_extension(server_app):
         server_app (NotebookWebApplication): handle to the
         Notebook webserver instance.
     """
-    route_pattern = PROXY_ROOT_BASE + '.*'
+    route_pattern = '.*' + PROXY_ROOT_BASE + '.*'
     spark_monitor_handlers = [
         (route_pattern, SparkMonitorHandler),
     ]
