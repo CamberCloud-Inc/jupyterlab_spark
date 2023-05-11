@@ -19,6 +19,7 @@ const extension: JupyterFrontEndPlugin<void> = {
       const content = new Widget();
       const widget = new MainAreaWidget({ content });
       const iframe = document.createElement("iframe");
+      content.node.appendChild(iframe);
 
       const url = URLExt.join(
         ServerConnection.makeSettings().baseUrl,
