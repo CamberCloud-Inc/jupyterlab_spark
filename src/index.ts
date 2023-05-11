@@ -4,11 +4,11 @@ import {
 } from '@jupyterlab/application';
 
 import {
-    IFrame,
     ICommandPalette,
     MainAreaWidget
 } from '@jupyterlab/apputils';
 
+import { Widget } from '@lumino/widgets';
 import { URLExt } from '@jupyterlab/coreutils';
 import { ServerConnection } from '@jupyterlab/services';
 
@@ -20,12 +20,18 @@ const extension: JupyterFrontEndPlugin<void>  = {
         console.log('JupyterLab SparkMonitor is activated!');
 
         function newSparkUI(port: string): MainAreaWidget {
-            const content = new IFrame({sandbox: ['allow-forms', 'allow-scripts']});
-            const url: URLExt.join(ServerConnection.makeSettings().baseUrl, 'sparkmonitor', port);
+            const content = new Widget();
+            const widget = new MainAreaWidget({ content });
+            let iframe = document.createElement('iframe');
 
-            content.url = url;
-            content.title.label = 'Spark UI';
-            content.id = `spark-ui-${port}`;
+            const url: URLExt.join(ServerConnection.makeSettings().baseUrl, 'sparkmonitor', port);
+            iframe.setAttribute('style', 'width:100%;height:100%;border:0');
+            iframe.setAttribute('src', url);
+            iframe.setAttribute('class', 'sparkUIIFrame');
+
+            widget.id = `spark-ui-${port}`;
+            widget.title.label = 'Spark UI';
+            widget.title.closable = true;
 
             return new MainAreaWidget({content});
         }
