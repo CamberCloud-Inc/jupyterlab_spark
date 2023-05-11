@@ -1,56 +1,59 @@
 import {
-  JupyterFrontEnd,
-  JupyterFrontEndPlugin
+    JupyterFrontEnd,
+    JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
 import {
-  ICommandPalette,
-  IFrame,
-  MainAreaWidget
+    IFrame,
+    ICommandPalette,
+    MainAreaWidget
 } from '@jupyterlab/apputils';
 
-const extension: JupyterFrontEndPlugin<void> = {
-  id: 'jupyterlab_spark:plugin',
-  autoStart: true,
-  requires: [ICommandPalette],
-  activate:(app: JupyterFrontEnd, palette: ICommandPalette) => {
-    console.log('JupyterLab extension jupyterlab_spark is activated!');
+import { URLExt } from '@jupyterlab/coreutils';
+import { ServerConnection } from '@jupyterlab/services';
 
-    const { commands } = app;
-    const command = "spark-ui:open";
+const extension: JupyterFrontEndPlugin<void>  = {
+    id: 'jupyterlab_spark:plugin',
+    autoStart: true,
+    requires: [ICommandPalette],
+    activate:(app: JupyterFrontEnd, palette: ICommandPalette) => {
+        console.log('JupyterLab SparkMonitor is activated!');
 
-    function newSparkUIWidget(): MainAreaWidget {
-      let content = new IFrame({sandbox: ['allow-forms', 'allow-same-origin', 'allow-scripts']});
-      content.url = 'http://localhost:4040/';
-      content.title.label = 'Spark UI';
-      content.id = 'camber-spark-ui';
-      return new MainAreaWidget({content});
-    }
+        function newSparkUI(port: string): MainAreaWidget {
+            const content = new IFrame({sandbox: ['allow-forms', 'allow-scripts']});
+            const url: URLExt.join(ServerConnection.makeSettings().baseUrl, 'sparkmonitor', port);
 
-    commands.addCommand(command, {
-      label: "Spark App UI",
-      caption: "Open the Spark App UI",
-      execute: (args: any) => {
-        let widget =  newSparkUIWidget();
-        // Regenerate the widget if disposed
-        if (widget.isDisposed) {
-          widget = newSparkUIWidget();
+            content.url = url;
+            content.title.label = 'Spark UI';
+            content.id = `spark-ui-${port}`;
+
+            return new MainAreaWidget({content});
         }
-        if (!widget.isAttached) {
-          // Attach the widget to the main work area if it's not there
-          app.shell.add(widget, "main");
-        }
-        // Activate the widget
-        app.shell.activateById(widget.id);
-      }
-    });
 
-    const category = "Spark";
-    palette.addItem({
-      command,
-      category
-    });
-  }
+        const command = 'spark-ui:open';
+        app.commands.addCommand(command, {
+            label: 'Open Spark UI',
+            caption: 'Open the Spark App UI',
+            execute: () => {
+                console.log('show spark UI');
+                const port = '4040';
+                let sparkUI = newSparkUI(port);
+                if (sparkUI.isDisposed) {
+                    sparkUI = newSparkUI(port);
+                }
+                if (!sparkUI.isAttached) {
+                    app.shell.add(sparkUI, 'main');
+                }
+                app.shell.activateById(sparkUI.id);
+            },
+        });
+
+        const category = 'Spark';
+        palette.addItem({
+            command,
+            category
+        });
+    },
 };
 
 export default extension;
