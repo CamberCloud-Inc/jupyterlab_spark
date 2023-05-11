@@ -46,9 +46,6 @@ class SparkMonitorHandler(JupyterHandler):
 
         proxy_root_path = PROXY_ROOT_BASE[:-1]
 
-        print("SPARKMONITOR_SERVER: Request URI: " + self.request.uri)
-        print("SPARKMONITOR_SERVER: Getting from " + url)
-
         request_path = self.request.uri[(self.request.uri.index(proxy_root_path) + len(proxy_root_path)):]
         # Remove the /port (ie /4040, /4041 etc) from the request path because
         # this is the path to the static js
@@ -56,21 +53,19 @@ class SparkMonitorHandler(JupyterHandler):
 
         self.request_root_url = \
             self.request.uri[:self.request.uri.index(proxy_root_path) + len(proxy_root_path)] + "/" + port
-        print('SPARKMONITOR_SERVER: Request_path ' +
-              request_path + ' \n Replace_path:' + self.request_root_url)
 
         backend_url = url_path_join(url, request_path)
         self.debug_url = url
         self.backendurl = backend_url
 
-        print('SPARKMONITOR_SERVER: backend_url: ' + self.backendurl)
-        print('SPARKMONITOR_SERVER: debug_url: ' + self.debug_url)
+        self.log.debug(f"SparkMonitor - Backend URL: {backend_url}")
+        self.log.debug(f"SparkMonitor - Debug URL: {url}")
 
         http = httpclient.AsyncHTTPClient()
         try:
             response = await http.fetch(backend_url)
         except Exception as e:
-            print('SparkMonitor: Spark UI Error ', e)
+            self.log.error('SparkMonitor: Spark UI Error ', e)
         else:
             self.handle_response(response)
 
@@ -82,7 +77,6 @@ class SparkMonitorHandler(JupyterHandler):
                                   'url': self.debug_url,
                                   'backendurl': self.backendurl,
                                   'replace_path': self.request_root_url})
-            print('SPARKMONITOR_SERVER: Spark UI not running')
         else:
             content_type = response.headers['Content-Type']
             if 'text/html' in content_type:
