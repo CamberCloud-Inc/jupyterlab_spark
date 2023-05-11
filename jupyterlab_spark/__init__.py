@@ -39,7 +39,8 @@ class SparkMonitorHandler(JupyterHandler):
         Fetches the Spark Web UI from the configured ports
         """
         # Grab base_url and port to get full url
-        baseurl = os.environ.get("SPARKMONITOR_UI_HOST", "127.0.0.1")
+        hostname = os.environ.get("HOSTNAME")
+        baseurl = os.environ.get("SPARKMONITOR_UI_HOST", hostname or "127.0.0.1")
         port_match = PORT_PARSE.findall(self.request.uri)
         port = "4040" if not port_match else port_match[0]
         url = "http://" + baseurl + ':' + port
@@ -58,8 +59,11 @@ class SparkMonitorHandler(JupyterHandler):
         self.debug_url = url
         self.backendurl = backend_url
 
-        self.log.debug(f"SparkMonitor - Backend URL: {backend_url}")
-        self.log.debug(f"SparkMonitor - Debug URL: {url}")
+        print(f"SparkMonitor - Backend URL: {backend_url}")
+        print(f"SparkMonitor - Debug URL: {url}")
+        print(f"SparkMonitor - Request URI: {self.request.uri}")
+        print(f'SparkMonitor: Request_path ' +
+              request_path + ' \n Replace_path:' + self.replace_path)
 
         http = httpclient.AsyncHTTPClient()
         try:
