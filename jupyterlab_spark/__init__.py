@@ -63,7 +63,7 @@ class SparkMonitorHandler(JupyterHandler):
         print(f"SparkMonitor - Debug URL: {url}")
         print(f"SparkMonitor - Request URI: {self.request.uri}")
         print(f'SparkMonitor: Request_path ' +
-              request_path + ' \n Replace_path:' + self.replace_path)
+              request_path + ' \n Replace_path:' + self.request_root_url)
 
         http = httpclient.AsyncHTTPClient()
         try:
