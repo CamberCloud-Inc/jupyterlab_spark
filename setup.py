@@ -59,6 +59,7 @@ setup_args = dict(
         "tornado>=6.2",
         "beautifulsoup4>=4.12",
         "jupyter_server>=2.5.0",
+        "jupyterlab~=3.6.0,<4",
     ],
     keywords=pkg_json["keywords"],
     classifiers=[
