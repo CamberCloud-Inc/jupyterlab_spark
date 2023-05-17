@@ -53,7 +53,7 @@
     "@jupyterlab/apputils": "^3.1.0",
     "@jupyterlab/coreutils": "^5.0.0",
     "@jupyterlab/services": "^6.0.0",
-    "@lumino/widgets": "^1.17.0"
+    "@lumino/widgets": "^1.37.2"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.1.0",
